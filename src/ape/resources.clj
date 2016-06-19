@@ -37,7 +37,8 @@
 				(bad-request message)
 				(let [user (aped/get-user-by-email username)]
 					(if (nil? user)
-						(let [newUser (aped/new-user name username password)]
+						(let [result (aped/new-user name username password)
+								  newUser (aped/get-user-by-email username)]
 				      (if newUser
 				        (let [claims {:user (get-in newUser [:id])
 				                      :exp (time/plus (time/now) (time/seconds 3600))}
