@@ -17,7 +17,7 @@
 
 (defroutes app
   (ANY "/users/me" [] aper/me)
-  (ANY "/auth/signin" [] aper/login))
+  (ANY "/auth/signin" [] aper/signin))
 
 (def auth-backend (jws-backend {:secret apec/secret :options {:alg :hs512}}))
 

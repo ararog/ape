@@ -17,22 +17,21 @@
   :available-media-types ["application/json"]
   :allowed-methods       [:get]
   :handle-ok             (fn [ctx]
-    (let [username (get-in ctx [:request :identity :user])
-          user     (aped/get-user-by-email username)]
+    (let [id	 (get-in ctx [:request :identity :user])
+          user (aped/get-user-by-id id)]
       (println username)
       (ok {:user user}))))
 
-(defresource login
+(defresource signin
   :available-media-types ["application/json"]
   :allowed-methods       [:post]
   :handle-created        (fn [ctx]
     (let [username (get-in ctx [:request :body :username])
           password (get-in ctx [:request :body :password])
-          valid?   (not= (aped/get-user-by-credentials username password)
-                          nil)]
-      (if valid?
-        (let [claims {:user (keyword username)
+          user  	 (aped/get-user-by-credentials username password)]
+      (if user
+        (let [claims {:user (get-in user [:id])
                       :exp (time/plus (time/now) (time/seconds 3600))}
               token (jws/sign claims apec/secret {:alg :hs512})]
-          (ok {:token token}))
+          (ok (merge {:user user} {:token token})))
         (bad-request {:message "wrong auth data"})))))
