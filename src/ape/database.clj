@@ -13,6 +13,10 @@
   (table :users)
   (database db))
 
+(defn new-user [name email password]
+	(insert users
+	  (values {:name name :email email :password password})))
+
 (defn get-user-by-id [id]
   (first (select users
                (fields :id :name :email :created_on :updated_on)
