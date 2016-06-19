@@ -6,4 +6,4 @@
 (defn seed-users! []
   (insert db/users
     (values
-      {:name "Rogerio Pereira Araujo" :email "rogerio.araujo@gmail.com" :password "1978@rpa"})))
+      {:name "Rogerio Pereira Araujo" :email "rogerio.araujo@gmail.com" :password ""})))
